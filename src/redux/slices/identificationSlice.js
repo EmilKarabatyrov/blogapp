@@ -23,4 +23,5 @@ const identificationSlice = createSlice({
 export const { setLogin, setUser } = identificationSlice.actions;
 export default identificationSlice.reducer;
 
-export const selectUnLoginedUser = (state) => state.identification;
+export const selectUnLoginedUser = (state) => state.identification.user;
+export const selectLoginValue = (state) => state.identification;

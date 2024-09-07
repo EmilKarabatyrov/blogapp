@@ -3,14 +3,14 @@ import './BlogHeader.scss';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectUnLoginedUser, setLogin } from '../../redux/slices/identificationSlice';
+import { selectLoginValue, setLogin } from '../../redux/slices/identificationSlice';
 import { removeUser, selectLoginedUser, setUser } from '../../redux/slices/loginedUserSlice';
 import userApi from '../../redux/query/userApi';
 
 import img from './images/smiley-cyrus.jpg';
 
 function BlogHeader() {
-  const { login } = useSelector(selectUnLoginedUser);
+  const { login } = useSelector(selectLoginValue);
   const { username, image } = useSelector(selectLoginedUser);
   const dispatch = useDispatch();
   const { data } = userApi.useGetUserQuery();
