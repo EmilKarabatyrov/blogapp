@@ -13,7 +13,7 @@ function SignUp() {
   const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
   const { username, email, password } = useSelector(selectUnLoginedUser);
-  const [createUser, { isSuccess }] = userActionsApi.useCreateUserMutation();
+  const [createUser, { isSuccess, error: loginError }] = userActionsApi.useCreateUserMutation();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
 
@@ -72,12 +72,12 @@ function SignUp() {
             },
             maxLength: {
               value: 20,
-              message:
-                'Your username should be no more than 20 characters long',
+              message: 'Your username should be no more than 20 characters long',
             },
           })}
         />
         <p>{errors.username?.message}</p>
+        <p>{loginError?.data?.errors.username}</p>
         <label htmlFor="email">Email address</label>
         <input
           type="text"
@@ -92,6 +92,7 @@ function SignUp() {
           })}
         />
         <p>{errors.email?.message}</p>
+        <p>{loginError?.data?.errors.email}</p>
         <label htmlFor="password">Password</label>
         <input
           type="password"
@@ -105,8 +106,7 @@ function SignUp() {
             },
             maxLength: {
               value: 40,
-              message:
-                'Your username should be no more than 40 characters long',
+              message: 'Your username should be no more than 40 characters long',
             },
           })}
         />
