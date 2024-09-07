@@ -1,0 +1,137 @@
+.article {
+  width: 910px;
+  min-height: 807px;
+  margin: 26px auto 26px auto;
+  padding: 0 15px 10px 15px;
+  border-radius: 5px;
+  background: rgb(255, 255, 255);
+  box-shadow: 0 3px 6px 2px rgba(0, 0, 0, 0.2);
+  .top {
+    display: flex;
+    justify-content: space-between;
+    .title {
+      display: flex;
+      flex-direction: row;
+      .text {
+        color: rgb(24, 144, 255);
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 28px;
+        margin-right: 13px;
+        margin-top: 15px;
+      }
+      .like {
+        margin-right: 5px;
+        margin-top: 20px;
+        height: 16px;
+        width: 16px;
+      }
+      .count {
+        margin-top: 17px;
+        color: rgba(0, 0, 0, 0.75);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 22px;
+      }
+    }
+    .person {
+      display: flex;
+      .info {
+        padding-right: 12px;
+        .name {
+          white-space: nowrap;
+          color: rgba(0, 0, 0, 0.85);
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 15px;
+          margin: 20px 0 0;
+        }
+        .date {
+          white-space: nowrap;
+          margin: 0;
+          color: rgba(0, 0, 0, 0.5);
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 22px;
+        }
+      }
+      .image {
+        margin-top: 13px;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+      }
+    }
+  }
+  .bottom {
+    margin-top: -13px;
+    position: relative;
+
+    .tags {
+      span {
+        width: 38px;
+        margin-right: 8px;
+        height: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+        border-radius: 2px;
+
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 12px;
+        font-weight: 400;
+
+        padding: 3px 6px;
+      }
+    }
+    .notags {
+      color: rgba(0, 0, 0, 0.75);
+      font-size: 12px;
+      font-weight: 400;
+    }
+    .text {
+      color: rgba(0, 0, 0, 0.75);
+      font-size: 12px;
+      font-weight: 400;
+      margin-top: 5px;
+      width: 682px;
+      line-height: 22px;
+    }
+    .changers {
+      position: absolute;
+      right: 0;
+      top: 33px;
+      .delete {
+        cursor: pointer;
+        margin-right: 12px;
+        box-sizing: border-box;
+        border: 1px solid rgb(245, 34, 45);
+        border-radius: 5px;
+        background-color: transparent;
+        width: 78px;
+        height: 31.1px;
+
+        color: rgb(245, 34, 45);
+        font-size: 14px;
+        font-weight: 400;
+      }
+      .edit {
+        cursor: pointer;
+        box-sizing: border-box;
+        border: 1px solid rgb(82, 196, 26);
+        border-radius: 5px;
+        width: 65.23px;
+        height: 31.1px;
+        background-color: transparent;
+
+        color: rgb(82, 196, 26);
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+  }
+}
+.spin {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}

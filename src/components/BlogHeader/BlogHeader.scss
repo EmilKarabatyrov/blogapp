@@ -1,0 +1,99 @@
+.blog-header {
+  padding: 0px 22px;
+  height: 80px;
+  background-color: #fff;
+  &__container {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    justify-content: space-between;
+    width: 1440px;
+    margin: 0 auto;
+  }
+  &__title {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0;
+  }
+  &__unauthorized {
+  }
+  &__authorized {
+  }
+}
+.unauthorized {
+  &__sign-in {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    border: none;
+    background: none;
+    margin-right: 10px;
+    cursor: pointer;
+    width: 84px;
+    text-align: left;
+  }
+  &__sign-up {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    padding: 8px 18px;
+    color: rgb(82, 196, 26);
+    cursor: pointer;
+    background: none;
+    box-sizing: border-box;
+    border: 1px solid rgb(82, 196, 26);
+    border-radius: 5px;
+  }
+}
+
+.authorized {
+  display: flex;
+  align-items: center;
+  &__create {
+    width: 112px;
+    height: 31px;
+    border-radius: 5px;
+    margin-right: 27px;
+    box-sizing: border-box;
+    border: 1px solid rgb(82, 196, 26);
+    background: transparent;
+
+    color: rgb(82, 196, 26);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+  }
+  &__profile {
+    display: flex;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 18px;
+    font-weight: 400;
+    text-decoration: none;
+    span {
+      margin-right: 13px;
+    }
+    img {
+      margin-right: 27px;
+      height: 46px;
+      width: 46px;
+      border-radius: 50%;
+    }
+  }
+  &__log-out {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.75);
+    border-radius: 5px;
+    padding: 8px 18px;
+    background: transparent;
+  }
+}

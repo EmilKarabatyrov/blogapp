@@ -1,0 +1,118 @@
+.articleList {
+  width: 910px;
+  margin: 26px auto 26px auto;
+  .spin {
+    width: 940px;
+    margin: 5px auto 40px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p {
+      margin-right: 10px;
+    }
+  }
+}
+.article {
+  background: rgb(255, 255, 255);
+  margin-bottom: 26px;
+  box-shadow: 0 3px 6px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 0 15px 24px 15px;
+  .top {
+    display: flex;
+    justify-content: space-between;
+    .title {
+      display: flex;
+      flex-direction: row;
+      .link {
+        text-decoration: none;
+        color: rgb(24, 144, 255);
+      }
+      .text {
+        color: rgb(24, 144, 255);
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 28px;
+        margin-right: 13px;
+        margin-top: 15px;
+        &:hover {
+          color: rgb(24, 1, 255);
+        }
+      }
+      .like {
+        margin-right: 5px;
+        margin-top: 20px;
+        height: 16px;
+        width: 16px;
+      }
+      .count {
+        margin-top: 18px;
+        color: rgba(0, 0, 0, 0.75);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 22px;
+      }
+    }
+    .person {
+      display: flex;
+      .info {
+        padding-right: 12px;
+        .name {
+          white-space: nowrap;
+          color: rgba(0, 0, 0, 0.85);
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 15px;
+          margin: 20px 0 0;
+        }
+        .date {
+          white-space: nowrap;
+          margin: 0;
+          text-align: right;
+          color: rgba(0, 0, 0, 0.5);
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 22px;
+        }
+      }
+      .image {
+        margin-top: 13px;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+      }
+    }
+  }
+  .bottom {
+    margin-top: -13px;
+    .tags {
+      span {
+        min-width: 38px;
+        margin-right: 8px;
+        height: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+        border-radius: 2px;
+
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 12px;
+        font-weight: 400;
+
+        padding: 3px 6px;
+      }
+    }
+    .notags {
+      color: rgba(0, 0, 0, 0.75);
+      font-size: 12px;
+      font-weight: 400;
+    }
+    .text {
+      color: rgba(0, 0, 0, 0.75);
+      font-size: 12px;
+      font-weight: 400;
+      margin-top: 5px;
+      width: 682px;
+      line-height: 22px;
+    }
+  }
+}

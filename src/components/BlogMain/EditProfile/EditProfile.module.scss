@@ -1,0 +1,95 @@
+.container {
+  width: 384px;
+  min-height: 500px;
+  margin: 60px auto 0px auto;
+  font-family: Roboto;
+  box-sizing: border-box;
+  padding-bottom: 48px;
+  border: 1px solid rgb(217, 217, 217);
+  border-radius: 6px;
+  box-shadow:
+    0px 0.61px 2.93px 0px rgba(0, 0, 0, 0.02),
+    0px 1.46px 7.05px 0px rgba(0, 0, 0, 0.03),
+    0px 2.75px 13.27px 0px rgba(0, 0, 0, 0.04),
+    0px 4.91px 23.68px 0px rgba(0, 0, 0, 0.04),
+    0px 9.19px 44.28px 0px rgba(0, 0, 0, 0.05),
+    0px 22px 106px 0px rgba(0, 0, 0, 0.07);
+  background: rgb(255, 255, 255);
+
+  .title {
+    color: rgb(38, 38, 38);
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 48px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    margin: 0 auto;
+
+    label {
+      color: rgb(38, 38, 38);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+    }
+
+    label:not(:first-child) {
+      margin-top: 12px;
+    }
+
+    input {
+      box-sizing: border-box;
+      height: 40px;
+      border: 1px solid rgb(217, 217, 217);
+      border-radius: 4px;
+      background: rgb(255, 255, 255);
+      padding: 8px 12px;
+      font-size: 16px;
+    }
+
+    input::placeholder {
+      color: rgb(191, 191, 191);
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    hr {
+      border: 1px solid rgb(232, 232, 232);
+      width: 320px;
+      margin: 20px auto 0 auto;
+    }
+    .saveContainer {
+      width: 320px;
+      margin: 21px auto 0 auto;
+      height: 40px;
+      .save {
+        width: 320px;
+        height: 40px;
+        border-radius: 4px;
+        background: rgb(24, 144, 255);
+        border: none;
+        cursor: pointer;
+
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 24px;
+
+        &:disabled {
+          opacity: 0.5;
+        }
+      }
+    }
+    p {
+      margin-top: 2px;
+      color: rgb(245, 34, 45);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+    }
+  }
+}
