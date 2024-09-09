@@ -6,24 +6,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../../../redux/slices/loginedUserSlice';
 import userActionsApi from '../../../redux/query/userActionsApi';
 import userApi from '../../../redux/query/userApi';
+import { selectLoginValue } from '../../../redux/slices/identificationSlice';
 
 import cl from './EditProfile.module.scss';
 
 function EditProfile() {
   const { data } = userApi.useGetUserQuery();
+  const { login } = useSelector(selectLoginValue)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { username, image, password, email } = useSelector(
     (state) => state.loginedUser.user,
   );
-  const [changeUser, { isSuccess }] = userActionsApi.useChangeUserMutation();
+  const [changeUser, { isSuccess, error, isLoading }] = userActionsApi.useChangeUserMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -32,6 +33,9 @@ function EditProfile() {
   });
 
   useEffect(() => {
+    if (!login) {
+      navigate('/sign-in');
+    }
     if (isSuccess) navigate('/');
     if (data?.user) {
       dispatch(setUser(data.user));
@@ -42,7 +46,7 @@ function EditProfile() {
         avatar: data.user.image || '',
       });
     }
-  }, [data, isSuccess, dispatch]);
+  }, [data, isSuccess, username, dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,13 +87,13 @@ function EditProfile() {
             maxLength: {
               value: 20,
               message:
-                'Your username should be no more than 20 characters long',
+                    'Your username should be no more than 20 characters long',
             },
             onChange: handleChange,
           })}
         />
         <p>{errors.username?.message}</p>
-
+        <p>{error?.data?.errors.username}</p>
         <label htmlFor="email">Email address</label>
         <input
           type="text"
@@ -107,7 +111,7 @@ function EditProfile() {
           })}
         />
         <p>{errors.email?.message}</p>
-
+        <p>{error?.data?.errors.email}</p>
         <label htmlFor="password">New password</label>
         <input
           type="password"
@@ -123,7 +127,7 @@ function EditProfile() {
             maxLength: {
               value: 40,
               message:
-                'Your password should be no more than 40 characters long',
+                    'Your password should be no more than 40 characters long',
             },
             onChange: handleChange,
           })}
@@ -140,7 +144,7 @@ function EditProfile() {
           {...register('avatar', {
             pattern: {
               value:
-                /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/,
+                    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/,
               message: 'Invalid url',
             },
             onChange: handleChange,
@@ -150,7 +154,7 @@ function EditProfile() {
 
         <hr />
         <div className={cl.saveContainer}>
-          <button type="submit" className={cl.save}>
+          <button type="submit" className={cl.save} disabled={isLoading}>
             Save
           </button>
         </div>

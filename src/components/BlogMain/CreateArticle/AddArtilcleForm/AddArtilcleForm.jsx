@@ -16,7 +16,7 @@ function AddArtilcleForm() {
     formState: { errors },
   } = useForm();
 
-  const [createArticle, { data: article, isSuccess }] = articlesActionsApi.useCreateArticleMutation();
+  const [createArticle, { data: article, isSuccess, isLoading }] = articlesActionsApi.useCreateArticleMutation();
 
   const [formData, setFormData] = useState({
     title: '',
@@ -121,7 +121,7 @@ function AddArtilcleForm() {
           Add tag
         </button>
       </div>
-      <button type="submit" className={cl.send}>Send</button>
+      <button type="submit" className={cl.send} disabled={isLoading}>Send</button>
     </form>
   );
 }

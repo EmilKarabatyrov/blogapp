@@ -15,6 +15,7 @@ function ArticleItem({ article }) {
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
+    if (!token) return;
     fetch(`https://blog.kata.academy/api/articles/${article.slug}`, {
       headers: {
         Authorization: `Token ${token}`,
@@ -32,6 +33,7 @@ function ArticleItem({ article }) {
 
   function onFavorite(slug) {
     const token = sessionStorage.getItem('token');
+    if (!token) return;
     fetch(`https://blog.kata.academy/api/articles/${slug}/favorite`, {
       method: 'POST',
       headers: {

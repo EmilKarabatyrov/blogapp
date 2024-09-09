@@ -19,7 +19,7 @@ function SignIn() {
     formState: { errors },
   } = useForm();
 
-  const [loginUser, { data, isSuccess, isError }] = userApi.useLoginUserMutation();
+  const [loginUser, { data, isSuccess, isError, isLoading }] = userApi.useLoginUserMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -73,7 +73,7 @@ function SignIn() {
         />
         <p>{errors.password?.message}</p>
         <div className={cl.createContainer}>
-          <button type="submit" className={cl.create}>
+          <button type="submit" className={cl.create} disabled={isLoading}>
             Login
           </button>
         </div>

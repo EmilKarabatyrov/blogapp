@@ -3,14 +3,18 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import uniqueId from 'lodash/uniqueId';
 import { Alert } from 'antd';
+import { useSelector } from 'react-redux';
 
 import articlesApi from '../../../../redux/query/articlesApi';
+import { selectLoginValue } from '../../../../redux/slices/identificationSlice';
 
 import cl from './EditArtilcleForm.module.scss';
 
 function EditArtilcleForm() {
   const navigate = useNavigate();
   const { slug } = useParams();
+  const { login } = useSelector(selectLoginValue)
+  const [loading, setLoading] = useState(false)
   const [tags, setTags] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
@@ -27,6 +31,7 @@ function EditArtilcleForm() {
   } = useForm();
 
   const onSubmit = (data) => {
+    setLoading(true)
     const tagValues = tags.map((tag) => tag.value);
     const articleData = {
       title: data.title ? data.title : article?.article.title,
@@ -46,6 +51,7 @@ function EditArtilcleForm() {
       body: JSON.stringify({ article: articleData }),
     })
       .then((response) => {
+        setLoading(false)
         if (!response.ok) {
           throw new Error('Network response was not okay');
         }
@@ -65,6 +71,10 @@ function EditArtilcleForm() {
   };
 
   useEffect(() => {
+    if (!login) {
+      navigate(`/articles/${slug}`);
+      return;
+    }
     setFormData((prevData) => ({
       ...prevData,
       title: article?.article.title,
@@ -78,7 +88,7 @@ function EditArtilcleForm() {
       }));
       setTags(arrToObj);
     }
-  }, [article]);
+  }, [article, login]);
 
   const tagChange = (index, event) => {
     const newTagFields = [...tags];
@@ -157,7 +167,7 @@ function EditArtilcleForm() {
           Add tag
         </button>
       </div>
-      <button type="submit" className={cl.send}>
+      <button type="submit" className={cl.send} disabled={loading}>
         Send
       </button>
     </form>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { HeartOutlined, ExclamationCircleFilled } from '@ant-design/icons';
+import { HeartOutlined, ExclamationCircleFilled, HeartFilled } from '@ant-design/icons';
 import Markdown from 'react-markdown';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -15,7 +15,7 @@ import img from './images/smiley-cyrus.jpg';
 import markdown from './markdown';
 
 function OneArticle() {
-  const { slug } = useParams();
+  const { slug: slugArticle } = useParams();
   const navigate = useNavigate();
   const { confirm } = Modal;
   const [error, setError] = useState(null);
@@ -24,8 +24,8 @@ function OneArticle() {
 
   const [deleteArticle, { isSuccess }] = articlesActionsApi.useDeleteArticleMutation();
   const { username } = useSelector(selectLoginedUser);
-
-  const [likesCount, setLikesCount] = useState(0);
+  const [favorited, setFavorited] = useState(article?.article.favorited);
+  const [favoritesCount, setFavoritesCount] = useState(article?.article.favoritesCount);
 
   const showDeleteConfirm = () => {
     confirm({
@@ -36,19 +36,89 @@ function OneArticle() {
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        deleteArticle(slug);
+        deleteArticle(slugArticle);
       },
     });
   };
 
   useEffect(() => {
-    if (article) {
-      setLikesCount(article.article.favoritesCount);
+    const token = sessionStorage.getItem('token');
+    if (!token) return;
+    fetch(`https://blog.kata.academy/api/articles/${article?.article.slug}`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFavorited(data.article.favorited);
+        setFavoritesCount(data.article.favoritesCount);
+      })
+      .catch(() => {
+        setError('sorry, we can\'t display the articles at the moment');
+      });
+  }, [article.slug]);
+
+  function onFavorite(slug) {
+    const token = sessionStorage.getItem('token');
+    if (!token) return;
+    fetch(`https://blog.kata.academy/api/articles/${slug}/favorite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not okay');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setFavorited(true);
+        setFavoritesCount(data.article.favoritesCount);
+      })
+      .catch(() => {
+        setError('sorry, we can\'t display the articles at the moment');
+      });
+  }
+
+  function onNoFavorite(slug) {
+    const token = sessionStorage.getItem('token');
+    fetch(`https://blog.kata.academy/api/articles/${slug}/favorite`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not okay');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setFavorited(false);
+        setFavoritesCount(data.article.favoritesCount);
+      })
+      .catch(() => {
+        setError('sorry, we can\'t display the articles at the moment');
+      });
+  }
+
+  function toggleFavorite() {
+    if (!favorited) {
+      onFavorite(article.slug);
+    } else {
+      onNoFavorite(article.slug);
     }
-  }, [article]);
+  }
 
   useEffect(() => {
-    getOneArticle(slug).catch((err) => setError(err.message));
+    getOneArticle(slugArticle).catch((err) => setError(err.message));
+    console.log(article)
     if (isSuccess) {
       navigate('/articles');
     }
@@ -74,10 +144,21 @@ function OneArticle() {
                   ? `${article?.article.title.substring(0, 50)}...`
                   : article?.article.title}
               </h1>
-              <div className={cl.like}>
-                <HeartOutlined />
-              </div>
-              <p className={cl.count}>{likesCount}</p>
+              {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+              {favorited ? (
+                <HeartFilled
+                  style={{ color: '#FF0707', marginRight: 5 }}
+                  /* eslint-disable-next-line react/jsx-no-bind */
+                  onClick={toggleFavorite}
+                />
+              ) : (
+                <HeartOutlined
+                  style={{ marginRight: 5 }}
+                  /* eslint-disable-next-line react/jsx-no-bind */
+                  onClick={toggleFavorite}
+                />
+              )}
+              <p className={cl.count}>{favoritesCount}</p>
             </div>
             <div className={cl.person}>
               <div className={cl.info}>

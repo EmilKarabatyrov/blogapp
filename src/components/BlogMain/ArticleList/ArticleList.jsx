@@ -20,7 +20,7 @@ function ArticleList() {
   }, [getUser]);
 
   useEffect(() => {
-    getArticles({ offset: offset - 1, limit: 5 });
+    getArticles({ offset: (offset - 1) * 5, limit: 5 });
   }, [offset, getArticles]);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function ArticleList() {
       ))}
       <Pagination
         align="center"
-        defaultCurrent={1}
+        defaultCurrent={offset}
         total={data.articlesCount}
         showSizeChanger={false}
         pageSize={5}

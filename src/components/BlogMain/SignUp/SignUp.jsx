@@ -13,7 +13,7 @@ function SignUp() {
   const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
   const { username, email, password } = useSelector(selectUnLoginedUser);
-  const [createUser, { isSuccess, error: loginError }] = userActionsApi.useCreateUserMutation();
+  const [createUser, { isSuccess, error: loginError, isLoading }] = userActionsApi.useCreateUserMutation();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
 
@@ -139,7 +139,7 @@ function SignUp() {
           </label>
         </div>
         <div className={cl.createContainer}>
-          <button type="submit" className={cl.create} disabled={!checked}>
+          <button type="submit" className={cl.create} disabled={!checked || isLoading}>
             Create
           </button>
         </div>
