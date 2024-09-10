@@ -43,8 +43,7 @@ function OneArticle() {
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
-    if (!token) return;
-    fetch(`https://blog.kata.academy/api/articles/${article?.article.slug}`, {
+    fetch(`https://blog.kata.academy/api/articles/${slugArticle}`, {
       headers: {
         Authorization: `Token ${token}`,
       },
@@ -57,7 +56,7 @@ function OneArticle() {
       .catch(() => {
         setError('sorry, we can\'t display the articles at the moment');
       });
-  }, [article.slug]);
+  }, [article?.article.slug]);
 
   function onFavorite(slug) {
     const token = sessionStorage.getItem('token');
@@ -110,15 +109,14 @@ function OneArticle() {
 
   function toggleFavorite() {
     if (!favorited) {
-      onFavorite(article.slug);
+      onFavorite(article?.article.slug);
     } else {
-      onNoFavorite(article.slug);
+      onNoFavorite(article?.article.slug);
     }
   }
 
   useEffect(() => {
     getOneArticle(slugArticle).catch((err) => setError(err.message));
-    console.log(article)
     if (isSuccess) {
       navigate('/articles');
     }
