@@ -5,6 +5,7 @@ import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { Alert } from 'antd';
 
 import style from '../ArticleList/ArticleList.module.scss';
+import articlesActionsApi from '../../../redux/query/articlesActionsApi';
 
 import img from './images/smiley-cyrus.jpg';
 
@@ -12,72 +13,27 @@ function ArticleItem({ article }) {
   const [favorited, setFavorited] = useState(article.favorited);
   const [favoritesCount, setFavoritesCount] = useState(article.favoritesCount);
   const [error, setError] = useState(null);
-
+  const [setFavorite] = articlesActionsApi.useFavoriteAnArticleMutation()
+  const [setNoFavorite] = articlesActionsApi.useNoFavoriteAnArticleMutation()
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    if (!token) return;
-    fetch(`https://blog.kata.academy/api/articles/${article.slug}`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setFavorited(data.article.favorited);
-        setFavoritesCount(data.article.favoritesCount);
-      })
-      .catch(() => {
-        setError('sorry, we can\'t display the articles at the moment');
-      });
-  }, [article.slug]);
+    setFavorited(article.favorited);
+    setFavoritesCount(article.favoritesCount);
+  }, [article]);
 
   function onFavorite(slug) {
     const token = sessionStorage.getItem('token');
     if (!token) return;
-    fetch(`https://blog.kata.academy/api/articles/${slug}/favorite`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not okay');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setFavorited(true);
-        setFavoritesCount(data.article.favoritesCount);
-      })
-      .catch(() => {
-        setError('sorry, we can\'t display the articles at the moment');
-      });
+    setFavorite({ slug })
+    setFavorited(true);
+    setFavoritesCount((prev) => prev + 1);
   }
 
   function onNoFavorite(slug) {
     const token = sessionStorage.getItem('token');
-    fetch(`https://blog.kata.academy/api/articles/${slug}/favorite`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not okay');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setFavorited(false);
-        setFavoritesCount(data.article.favoritesCount);
-      })
-      .catch(() => {
-        setError('sorry, we can\'t display the articles at the moment');
-      });
+    if (!token) return;
+    setNoFavorite({ slug })
+    setFavorited(false);
+    setFavoritesCount((prev) => prev - 1);
   }
 
   function toggleFavorite() {
@@ -139,7 +95,11 @@ function ArticleItem({ article }) {
             <div className={style.notags}>Not found tags</div>
           )}
         </div>
-        <div className={style.text}>{article.description}</div>
+        <div className={style.text}>
+          {article.description?.length > 100
+            ? `${article.description?.substring(0, 101)}...`
+            : article.description}
+        </div>
       </div>
     </div>
   );

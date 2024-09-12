@@ -13,7 +13,13 @@ function BlogHeader() {
   const { login } = useSelector(selectLoginValue);
   const { username, image } = useSelector(selectLoginedUser);
   const dispatch = useDispatch();
-  const { data } = userApi.useGetUserQuery();
+  const [getUser, { data }] = userApi.useLazyGetUserQuery();
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (!token) return;
+    getUser()
+  }, [getUser]);
 
   useEffect(() => {
     if (data?.user) {

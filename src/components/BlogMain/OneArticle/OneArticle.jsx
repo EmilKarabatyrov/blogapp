@@ -21,11 +21,12 @@ function OneArticle() {
   const [error, setError] = useState(null);
 
   const [getOneArticle, { data: article, isLoading }] = articlesApi.useLazyGetOneArticleQuery();
-
   const [deleteArticle, { isSuccess }] = articlesActionsApi.useDeleteArticleMutation();
   const { username } = useSelector(selectLoginedUser);
-  const [favorited, setFavorited] = useState(article?.article.favorited);
-  const [favoritesCount, setFavoritesCount] = useState(article?.article.favoritesCount);
+  const [favorited, setFavorited] = useState(false);
+  const [favoritesCount, setFavoritesCount] = useState(0);
+  const [setFavorite] = articlesActionsApi.useFavoriteAnArticleMutation()
+  const [setNoFavorite] = articlesActionsApi.useNoFavoriteAnArticleMutation()
 
   const showDeleteConfirm = () => {
     confirm({
@@ -42,69 +43,31 @@ function OneArticle() {
   };
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    fetch(`https://blog.kata.academy/api/articles/${slugArticle}`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    getOneArticle(slugArticle).then((response) => {
+      if (response.error) {
+        setError('sorry, we can\'t display the articles at the moment');
+      } else {
+        const { data } = response;
         setFavorited(data.article.favorited);
         setFavoritesCount(data.article.favoritesCount);
-      })
-      .catch(() => {
-        setError('sorry, we can\'t display the articles at the moment');
-      });
-  }, [article?.article.slug]);
+      }
+    }).catch((err) => setError(err.message));
+  }, [slugArticle]);
 
   function onFavorite(slug) {
     const token = sessionStorage.getItem('token');
     if (!token) return;
-    fetch(`https://blog.kata.academy/api/articles/${slug}/favorite`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not okay');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setFavorited(true);
-        setFavoritesCount(data.article.favoritesCount);
-      })
-      .catch(() => {
-        setError('sorry, we can\'t display the articles at the moment');
-      });
+    setFavorite({ slug })
+    setFavorited(true);
+    setFavoritesCount((prev) => prev + 1);
   }
 
   function onNoFavorite(slug) {
     const token = sessionStorage.getItem('token');
-    fetch(`https://blog.kata.academy/api/articles/${slug}/favorite`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not okay');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setFavorited(false);
-        setFavoritesCount(data.article.favoritesCount);
-      })
-      .catch(() => {
-        setError('sorry, we can\'t display the articles at the moment');
-      });
+    if (!token) return;
+    setNoFavorite({ slug })
+    setFavorited(false);
+    setFavoritesCount((prev) => prev - 1);
   }
 
   function toggleFavorite() {
@@ -116,11 +79,17 @@ function OneArticle() {
   }
 
   useEffect(() => {
+    if (isSuccess) {
+      navigate('/articles');
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
     getOneArticle(slugArticle).catch((err) => setError(err.message));
     if (isSuccess) {
       navigate('/articles');
     }
-  }, [article, isSuccess]);
+  }, [isSuccess]);
 
   return (
     <>

@@ -4,20 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { selectArticles, setArticles, setOffset } from '../../../redux/slices/articlesSlice';
 import articlesApi from '../../../redux/query/articlesApi';
-import userApi from '../../../redux/query/userApi';
 import ArticleItem from '../ArticleItem/ArticleItem';
 
 import style from './ArticleList.module.scss';
 
 function ArticleList() {
   const { articles = [], offset } = useSelector(selectArticles);
-  const [getUser] = userApi.useLazyGetUserQuery();
   const [getArticles, { data = [], isLoading, error }] = articlesApi.useLazyGetArticlesQuery();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    getUser();
-  }, [getUser]);
 
   useEffect(() => {
     getArticles({ offset: (offset - 1) * 5, limit: 5 });

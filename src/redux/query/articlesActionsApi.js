@@ -26,8 +26,8 @@ const articlesActionsApi = createApi({
       }),
     }),
     favoriteAnArticle: build.mutation({
-      query: (slug) => ({
-        url: `/articles/${slug}/favorite`,
+      query: (params) => ({
+        url: `/articles/${params.slug}/favorite`,
         method: 'POST',
         headers: {
           Authorization: `Token ${getToken()}`,
@@ -35,8 +35,8 @@ const articlesActionsApi = createApi({
       }),
     }),
     noFavoriteAnArticle: build.mutation({
-      query: (slug) => ({
-        url: `/articles/${slug}/favorite`,
+      query: (params) => ({
+        url: `/articles/${params.slug}/favorite`,
         method: 'DELETE',
         headers: {
           Authorization: `Token ${getToken()}`,
